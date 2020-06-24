@@ -3,10 +3,10 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 
-const Home = require('../views/home/Home').default
-const Cart = require('../views/cart/Cart').default
-const Catgory = require('../views/catgory/Catgory').default
-const Profile = require('../views/profile/Profile').default
+const Home = require('views/home/Home').default
+const Cart = require('views/cart/Cart').default
+const Catgory = require('views/category/Category').default
+const Profile = require('views/profile/Profile').default
 
 const routes =[
 	{
