@@ -3,13 +3,18 @@
 		<nar-bar class="home-nav-bar">
 			<div slot="center">购物街</div>
 		</nar-bar>
-		<b-scroll class="home-content">
+		<b-scroll class="home-content"
+      @postion="scrollPostion"
+      @pullingUp="loadMore"
+      :postion="3"
+      ref="bscroll">
 			<home-swiper :cbanners="banners"></home-swiper>
 			<home-recommend :crecommends="recommends"></home-recommend>
 			<home-feture></home-feture>
 			<tab-control :titles="['流行','新款','精选']" @tabClick="homeTabClick"/>
 			<goods :goods="showGoods"></goods>
 		</b-scroll>
+    <back-top @click.native="backTopClick" v-show="showBackTop"></back-top>
 	</div>
 </template>
 
@@ -18,12 +23,13 @@
 	import BScroll from 'components/common/scroll/BScroll.vue'
 	import TabControl from 'components/content/tabcontrol/TabControl.vue'
 	import Goods from 'components/content/good/Goods.vue'
-	
-	
+  import BackTop from '../../components/content/backtop/BackTop.vue'
+
+
 	import HomeSwiper from './childComps/HomeSwiper.vue'
 	import HomeRecommend from './childComps/HomeRecommend.vue'
 	import HomeFeture from './childComps/HomeFeture.vue'
-	
+
 	import {getHomeMultidata,getHomeData} from 'network/home.js'
 	export default {
 		name: 'Home',
@@ -34,7 +40,8 @@
 			HomeFeture,
 			TabControl,
 			Goods,
-			BScroll
+			BScroll,
+      BackTop
 		},
 		data(){
 			return {
@@ -45,23 +52,25 @@
 					'new':{page:0,list:[]},
 					'sell':{page:0,list:[]}
 				},
-				currentIndex: 'pop'
+				currentIndex: 'pop',
+        showBackTop: false
 			}
-		},	
+		},
 		computed:{
 			showGoods() {
 				return this.goods[this.currentIndex].list
 			}
+
 		},
 		created() {
 			this.getHomeMultidata()
-			
+
 			this.getHomeData('pop')
 			this.getHomeData('new')
 			this.getHomeData('sell')
 		},
 		methods:{
-			
+
 			homeTabClick(index){
 				console.log("================",index)
 				switch(index){
@@ -72,29 +81,34 @@
 					case 2: this.currentIndex='sell'
 						break
 				}
-				console.log("================",this.currentIndex)
 			},
+      backTopClick(){
+        this.$refs.bscroll.scrollToPostion(0,0,500)
+      },
+      scrollPostion(postion){
+        this.showBackTop = -postion>1000
+      },
+      loadMore(){
+        this.getHomeData(this.currentIndex)
+      },
 			/**
 			 * 网络请求
 			 */
 			getHomeMultidata(){
 				getHomeMultidata().then(res =>{
-					console.log(res)
 					this.banners = res.data.banner.list
 					this.recommends = res.data.recommend.list
-					console.log(this.recommends)
 				})
 			},
 			getHomeData(type){
-				console.log(type)
 				const page = this.goods[type].page+1;
 				getHomeData(type,page).then(res=>{
 					this.goods[type].list.push(...res.data.list)
 					this.goods[type].page=page
-					console.log(res)
-				})	
+          this.$refs.bscroll.finishPullUp()
+				})
 			}
-			
+
 		}
 	}
 </script>
