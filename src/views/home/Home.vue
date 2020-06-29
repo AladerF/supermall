@@ -3,18 +3,22 @@
 		<nar-bar class="home-nav-bar">
 			<div slot="center">购物街</div>
 		</nar-bar>
-		<home-swiper :cbanners="banners"></home-swiper>
-		<home-recommend :crecommends="recommends"></home-recommend>
-		<home-feture></home-feture>
-		<tab-control :titles="['流行','新款','精选']" @tabClick="homeTabClick"/>
-		<goods :goods="showGoods"></goods>
+		<b-scroll class="home-content">
+			<home-swiper :cbanners="banners"></home-swiper>
+			<home-recommend :crecommends="recommends"></home-recommend>
+			<home-feture></home-feture>
+			<tab-control :titles="['流行','新款','精选']" @tabClick="homeTabClick"/>
+			<goods :goods="showGoods"></goods>
+		</b-scroll>
 	</div>
 </template>
 
 <script>
 	import NarBar from 'components/common/navbar/NavBar.vue'
+	import BScroll from 'components/common/scroll/BScroll.vue'
 	import TabControl from 'components/content/tabcontrol/TabControl.vue'
 	import Goods from 'components/content/good/Goods.vue'
+	
 	
 	import HomeSwiper from './childComps/HomeSwiper.vue'
 	import HomeRecommend from './childComps/HomeRecommend.vue'
@@ -29,7 +33,8 @@
 			HomeRecommend,
 			HomeFeture,
 			TabControl,
-			Goods
+			Goods,
+			BScroll
 		},
 		data(){
 			return {
@@ -94,7 +99,7 @@
 	}
 </script>
 
-<style>
+<style scoped>
 	.home-nav-bar {
     background-color: var(--color-tint);
     color:#fff;
@@ -106,4 +111,13 @@
     z-index: 9;
 
   }
+	.home-content {
+		/* height: 100px; */
+		overflow: hidden;
+		position: absolute;
+		top: 44px;
+		bottom: 49px;
+		right: 0;
+		left: 0;
+	}
 </style>
