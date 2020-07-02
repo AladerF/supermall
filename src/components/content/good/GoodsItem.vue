@@ -1,6 +1,6 @@
 <template>
-	<div class="goods-item" >
-		<img :src="goodItem.show.img" />
+	<div class="goods-item" @click="goodsClick(goodItem.shopId)">
+		<img :src="goodItem.show.img" @load="imgLoadFinshed"/>
 		<div  class="goods-info">
 			<p>{{goodItem.title}}</p>
 			<span class="price">{{goodItem.price}}</span>
@@ -19,7 +19,17 @@
 					return {}
 				}
 			}
-		}
+		},
+    methods:{
+      //该方法是图片加载完之后触发该方法
+      imgLoadFinshed(){
+        //利用事件总线发送通知，由需要的监听这个通知
+        this.$bus.$emit("imgLoadFinsh")
+      },
+      goodsClick(id){
+        this.$router.push("/detail/"+id)
+      }
+    }
 	}
 </script>
 
@@ -27,16 +37,16 @@
 	.goods-item {
 	    padding-bottom: 40px;
 	    position: relative;
-	
+
 	    width: 48%;
 	  }
-	
+
 	  .goods-item img {
 	    width: 100%;
 	    border-radius: 5px;
 	    border:3px solid var(--color-tint);
 	  }
-	
+
 	  .goods-info {
 	    font-size: 12px;
 	    position: absolute;
@@ -46,23 +56,23 @@
 	    overflow: hidden;
 	    text-align: center;
 	  }
-	
+
 	  .goods-info p {
 	    overflow: hidden;
 	    text-overflow: ellipsis;
 	    white-space: nowrap;
 	    margin-bottom: 3px;
 	  }
-	
+
 	  .goods-info .price {
 	    color: var(--color-high-text);
 	    margin-right: 20px;
 	  }
-	
+
 	  .goods-info .collect {
 	    position: relative;
 	  }
-	
+
 	  .goods-info .collect::before {
 	    content: '';
 	    position: absolute;

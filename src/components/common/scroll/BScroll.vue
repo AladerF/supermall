@@ -40,6 +40,9 @@
       },
       finishPullUp(){
         this.bs.finishPullUp()
+      },
+      refresh(){
+        this.bs.refresh()
       }
     }
 	}

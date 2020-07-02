@@ -7,6 +7,7 @@ const Home = require('views/home/Home').default
 const Cart = require('views/cart/Cart').default
 const Catgory = require('views/category/Category').default
 const Profile = require('views/profile/Profile').default
+const Detail = require('views/detail/Detail').default
 
 const routes =[
 	{
@@ -40,7 +41,14 @@ const routes =[
 		meta: {
 			title: '我的'
 		}
-	}
+	},
+  {
+    path: '/detail/:id',
+    component: Detail,
+    meta:{
+      title: '详情页'
+    }
+  }
 ]
 const router = new VueRouter({
 	routes,

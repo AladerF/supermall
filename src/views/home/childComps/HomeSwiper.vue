@@ -1,8 +1,8 @@
 <template>
-  <swiper class="home-swiper">
+  <swiper class="home-swiper" >
     <swiper-item v-for="item in cbanners" :key="item.acm">
       <a :href="item.link">
-        <img :src="item.image" alt="">
+        <img :src="item.image" alt="" @load="swiperLoad">
       </a>
     </swiper-item>
   </swiper>
@@ -20,8 +20,22 @@
                 }
             }
         },
+        data(){
+          return {
+            flag: false
+          }
+        },
         components:{
             Swiper,SwiperItem
+        },
+        methods:{
+          swiperLoad(){
+            if(!this.flag){
+              console.log("-----------")
+              this.$emit("swiperLoadFished")
+              this.flag = true
+            }
+          }
         }
     }
 </script>
